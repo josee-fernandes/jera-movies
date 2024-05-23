@@ -53,7 +53,7 @@ Not deployed yet.
 
 ### Frontend 💻
 
-- [ ] Initial setup
+- [x] Initial setup
 - [ ] Landing Page
 - [ ] Sign Up
 - [ ] Sign In
