@@ -44,12 +44,12 @@ Not deployed yet.
 - [x] Landing Page
 - [x] Sign Up
 - [x] Sign In
-- [ ] Create profile
-- [ ] Choose profile
-- [ ] Home
-  - [ ] Movie suggestion
-  - [ ] To watch movies
-  - [ ] Watched movies
+- [x] Create profile
+- [x] Choose profile
+- [x] Home
+  - [x] Movie suggestion
+  - [x] To watch movies
+  - [x] Watched movies
 
 ### Frontend 💻
 
