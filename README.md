@@ -1,40 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Jera Movies 🍿
 
-## Getting Started
+Application for a code challenge from [Jera](https://jera.com.br).
 
-First, run the development server:
+## Instructions
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Run development server:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`$ pnpm run dev`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+It will run by default on [http://localhost:3000](http://localhost:3000)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Live preview 🟢
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Not deployed yet.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Requirements checklist
 
-## Learn More
+### Database 🪪
 
-To learn more about Next.js, take a look at the following resources:
+- [x] Modeling
+- [ ] Programming
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend ⚙️
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [ ] Sign Up
+- [ ] Sign In
+- [ ] Social Sign In (Facebook)
+- [ ] Create profile
+- [ ] Update profile (name)
+- [ ] List profiles
+- [ ] Movie suggestion list
+- [ ] Search movie by query
+- [ ] Toggle between watched or to watch
+- [ ] Filtered list by watched or to watch
+- [ ] Share watched movie on Facebook
+- [ ] Notify to watch
 
-## Deploy on Vercel
+### Design 🎨
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [x] Logo
+- [x] Style Guide (colors, fonts)
+- [ ] Assets (movie posters)
+- [x] Landing Page
+- [ ] Sign Up
+- [ ] Sign In
+- [ ] Choose profile
+- [ ] Home
+  - [ ] Movie suggestion
+  - [ ] To watch movies
+  - [ ] Watched movies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Frontend 💻
+
+- [ ] Initial setup
+- [ ] Landing Page
+- [ ] Sign Up
+- [ ] Sign In
+- [ ] Choose profile
+- [ ] Home
+  - [ ] Movie suggestion
+  - [ ] To watch movies
+  - [ ] Watched movies
+
+### License
+
+Not added yet.
