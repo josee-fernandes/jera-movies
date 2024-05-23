@@ -42,8 +42,9 @@ Not deployed yet.
 - [x] Style Guide (colors, fonts)
 - [ ] Assets (movie posters)
 - [x] Landing Page
-- [ ] Sign Up
-- [ ] Sign In
+- [x] Sign Up
+- [x] Sign In
+- [ ] Create profile
 - [ ] Choose profile
 - [ ] Home
   - [ ] Movie suggestion
