@@ -24,7 +24,7 @@ const playfairDisplay = PlayfairDisplay({
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   useIsomorphicLayoutEffect(() => {
-    document.body.className = `h-full w-full overflow-x-hidden bg-brand-primary font-swansea ${anton.variable} ${swansea.variable} ${playfairDisplay.variable}`
+    document.body.className = `overflow-x-hidden bg-brand-primary font-swansea ${anton.variable} ${swansea.variable} ${playfairDisplay.variable}`
   }, [])
 
   return <Component {...pageProps} />

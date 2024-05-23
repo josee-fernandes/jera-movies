@@ -1,10 +1,10 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -14,9 +14,21 @@ const config: Config = {
         'playfair-display': ['var(--font-playfair-display)'],
       },
       colors: {
-        'brand-primary': '#FFFFFF',
-        'brand-secondary': '#000000',
-        'brand-accent': '#0DB551',
+        'brand-primary': {
+          '300': '#FFFFFF',
+          '500': '#FFFFFF',
+          '900': '#CCCCCC',
+        },
+        'brand-secondary': {
+          '300': '#333333',
+          '500': '#000000',
+          '900': '#000000',
+        },
+        'brand-accent': {
+          '300': '#13EE6C',
+          '500': '#0DB551',
+          '900': '#0A9141',
+        },
         'system-success': '#10B981',
         'system-error': '#F43F5E',
         'system-warning': '#F59E0B',
@@ -24,5 +36,5 @@ const config: Config = {
     },
   },
   plugins: [],
-};
-export default config;
+}
+export default config

@@ -17,6 +17,6 @@ body {
   text-rendering: optimizeLegibility !important;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
