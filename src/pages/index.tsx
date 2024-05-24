@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <section className="bg-brand-primary h-screen">
-        <nav className="mx-auto mt-[5.375rem] flex max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
+        <nav className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-4 pt-[5.375rem] md:flex-row">
           <Image src={logo} alt="Jera Movies logo" className="h-10" />
           <div className="flex gap-4">
             <button className="bg-brand-primary rounded-lg border-[1px] border-brand-primary-900 px-6 py-2 text-brand-secondary-500 transition-all hover:border-brand-primary-900 md:border-transparent">

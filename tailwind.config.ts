@@ -32,6 +32,7 @@ const config: Config = {
         'system-success': '#10B981',
         'system-error': '#F43F5E',
         'system-warning': '#F59E0B',
+        'social-facebook': '#0866FF',
       },
     },
   },
