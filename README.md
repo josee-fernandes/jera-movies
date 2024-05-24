@@ -12,7 +12,7 @@ It will run by default on [http://localhost:3000](http://localhost:3000)
 
 ## Live preview 🟢
 
-Not deployed yet.
+https://jeramovies.vercel.app/
 
 ## Requirements checklist
 
