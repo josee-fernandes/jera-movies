@@ -10,7 +10,7 @@ export const CreateProfileButton: React.FC<CreateProfileButtonProps> = ({
   return (
     <div
       role="button"
-      className="group relative flex size-44 items-center justify-center overflow-hidden rounded-full"
+      className="group relative flex size-28 items-center justify-center overflow-hidden rounded-full md:size-[17vw] lg:size-44"
       onClick={onClick}
     >
       <div className="absolute size-full rounded-full border-8 border-brand-accent-500 transition-all group-hover:border-brand-secondary-500" />

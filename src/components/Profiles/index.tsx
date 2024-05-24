@@ -68,18 +68,20 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
               <Avatar
                 src="/avatar-3.png"
                 alt="New profile"
-                className="size-64"
+                className="size-40 md:size-[25vw] lg:size-64"
               />
-              <span className="text-center text-5xl">
+              <h3 className="text-center text-lg md:text-[4.7vw] lg:text-5xl">
                 THIS NEW PROFILE WILL BE CALLED
-              </span>
+              </h3>
             </div>
             <CreateProfileForm onCreate={onCreate} />
           </div>
         </div>
       ) : (
         <div className="relative mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-center gap-10">
-          <span className="text-center text-5xl">WHO&apos;S BROWSING?</span>
+          <h3 className="text-center text-2xl md:text-[4.7vw] lg:text-5xl">
+            WHO&apos;S BROWSING?
+          </h3>
           <div className="flex max-w-[1200px] flex-wrap items-center justify-center gap-5">
             {profiles.map((profile) => (
               <Profile key={profile.id} profile={profile} onSelect={onSelect} />

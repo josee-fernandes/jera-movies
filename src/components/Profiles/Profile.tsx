@@ -14,7 +14,7 @@ export const Profile: React.FC<ProfileProps> = ({ profile, onSelect }) => {
   return (
     <div
       role="button"
-      className="group relative flex size-44 items-center justify-center overflow-hidden rounded-full"
+      className="group relative flex size-28 items-center justify-center overflow-hidden rounded-full md:size-[17vw] lg:size-44"
       onClick={handleSelect}
     >
       <div className="absolute z-[1] size-full rounded-full border-8 border-transparent transition-all group-hover:border-brand-secondary-500" />
