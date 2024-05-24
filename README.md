@@ -55,13 +55,27 @@ Not deployed yet.
 
 - [x] Initial setup
 - [ ] Landing Page
+  - [x] Layout
+  - [ ] API Integration
 - [ ] Sign Up
+  - [x] Layout
+  - [ ] API Integration
 - [ ] Sign In
+  - [x] Layout
+  - [ ] API Integration
 - [ ] Choose profile
+  - [x] Layout
+  - [ ] API Integration
 - [ ] Home
   - [ ] Movie suggestion
+    - [x] Layout
+    - [ ] API Integration
   - [ ] To watch movies
+    - [x] Layout
+    - [ ] API Integration
   - [ ] Watched movies
+    - [x] Layout
+    - [ ] API Integration
 
 ### License
 
