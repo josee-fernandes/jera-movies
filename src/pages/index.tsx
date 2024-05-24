@@ -9,7 +9,7 @@ const Home: NextPage = () => {
         <nav className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-4 pt-[5.375rem] md:flex-row">
           <Image src={logo} alt="Jera Movies logo" className="h-10" />
           <div className="flex gap-4">
-            <button className="bg-brand-primary rounded-lg border-[1px] border-brand-primary-900 px-6 py-2 text-brand-secondary-500 transition-all hover:border-brand-primary-900 md:border-transparent">
+            <button className="bg-brand-primary rounded-lg border border-brand-primary-900 px-6 py-2 text-brand-secondary-500 transition-all hover:border-brand-primary-900 md:border-transparent">
               SIGN UP
             </button>
             <button className="rounded-lg bg-brand-accent-500 px-6 py-2 text-brand-primary-500">

@@ -2,13 +2,15 @@
   "extends": [
     "@rocketseat/eslint-config/next",
     "next/core-web-vitals",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:tailwindcss/recommended"
   ],
   "plugins": ["simple-import-sort"],
   "rules": {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "import/no-absolute-path": "off"
+    "import/no-absolute-path": "off",
+    "tailwindcss/no-custom-classname": "off"
   },
   "parserOptions": {
     "sourceType": "module",

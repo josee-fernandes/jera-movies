@@ -10,7 +10,7 @@ const SignUp: NextPage = () => {
         <button className="block md:absolute">
           <Icon
             name="move-left"
-            className="h-12 w-12 text-brand-secondary-500 transition-all hover:text-brand-accent-500"
+            className="size-12 text-brand-secondary-500 transition-all hover:text-brand-accent-500"
           />
         </button>
         <div className="relative flex flex-col items-center justify-between gap-20 md:flex-row">

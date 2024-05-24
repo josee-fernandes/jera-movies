@@ -41,7 +41,7 @@ export const SignInForm: React.FC = () => {
             type="email"
             id="email"
             placeholder="Enter your email"
-            className="h-full rounded-[0.625rem] border-[1px] border-brand-accent-500 px-2 py-3 text-brand-secondary-500"
+            className="h-full rounded-[0.625rem] border border-brand-accent-500 px-2 py-3 text-brand-secondary-500"
             required
             {...register('email')}
           />
@@ -54,7 +54,7 @@ export const SignInForm: React.FC = () => {
             type="password"
             id="password"
             placeholder="Enter your password"
-            className="h-full rounded-[0.625rem] border-[1px] border-brand-accent-500 px-2 py-3 text-brand-secondary-500"
+            className="h-full rounded-[0.625rem] border border-brand-accent-500 px-2 py-3 text-brand-secondary-500"
             required
             {...register('password')}
           />
@@ -64,7 +64,7 @@ export const SignInForm: React.FC = () => {
       <div className="flex w-full flex-col items-center gap-3">
         <button
           type="button"
-          className="bg-social-facebook h-[3.375rem] w-full rounded-lg px-6 py-2 font-bold  text-brand-primary-500 md:h-[4.5rem]"
+          className="h-[3.375rem] w-full rounded-lg bg-social-facebook px-6 py-2 font-bold  text-brand-primary-500 md:h-[4.5rem]"
         >
           FACEBOOK
         </button>
