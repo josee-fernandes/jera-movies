@@ -24,19 +24,21 @@ export const CreateProfileForm: React.FC<CreateProfileFormProps> = ({
       userId: '1',
     }
 
-    console.log({ profile })
-
     onCreate(profile)
   }
 
   return (
-    <form className="w-full" onSubmit={handleSubmit(handleCreateProfile)}>
+    <form
+      className="w-full max-w-xl"
+      onSubmit={handleSubmit(handleCreateProfile)}
+    >
       <div className="flex w-full flex-col items-center gap-2.5">
         <div className="flex w-full flex-col">
           <input
             type="text"
             placeholder="Enter new profile name"
             className="text-center text-[4rem] font-bold text-brand-secondary-500"
+            maxLength={10}
             required
             {...register('name')}
           />

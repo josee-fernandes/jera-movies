@@ -1,6 +1,9 @@
 import { NextPage } from 'next'
+import Image from 'next/image'
+import logo from 'public/logo.svg'
 import { useCallback, useState } from 'react'
 
+import { Avatar } from '@/components/Avatar'
 import { Profiles } from '@/components/Profiles'
 
 const Browse: NextPage = () => {
@@ -12,10 +15,28 @@ const Browse: NextPage = () => {
     setProfileSelection(false)
   }, [])
 
+  const handleChangeProfile = useCallback(() => {
+    setProfileSelection(true)
+  }, [])
+
   return (
-    <div className="relative mx-auto min-h-screen w-[95%] max-w-[1200px] bg-brand-primary-500 py-16 md:py-[5.375rem]">
+    <div className="min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
+      <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
+        <Image src={logo} alt="Jera Movies logo" className="h-10 w-max" />
+        <div role="button" onClick={handleChangeProfile}>
+          {currentProfile?.avatar && (
+            <Avatar
+              src={currentProfile.avatar}
+              alt={currentProfile.name}
+              className="size-10"
+            />
+          )}
+        </div>
+      </nav>
       {profileSelection && <Profiles onProfileSelect={onProfileSelect} />}
-      <pre>{JSON.stringify(currentProfile, null, 2)}</pre>
+      <div className="mx-auto w-max">
+        <pre>{JSON.stringify(currentProfile, null, 2)}</pre>
+      </div>
     </div>
   )
 }
