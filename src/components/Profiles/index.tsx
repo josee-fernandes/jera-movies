@@ -51,7 +51,7 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
   }, [])
 
   return (
-    <div className="fixed left-0 top-0 flex size-full h-screen flex-col items-center justify-center bg-brand-primary-500">
+    <div className="fixed left-0 top-0 z-10 flex size-full h-screen flex-col items-center justify-center bg-brand-primary-500">
       {creatingProfile ? (
         <div className="relative mx-auto w-[95%] max-w-[1200px]">
           <button
