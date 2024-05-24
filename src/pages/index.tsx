@@ -23,13 +23,13 @@ const Home: NextPage = () => {
           <div className="flex gap-4">
             <button
               className="bg-brand-primary rounded-lg border border-brand-primary-900 px-6 py-2 text-brand-secondary-500 transition-all hover:border-brand-primary-900 md:border-transparent"
-              onClick={handleSignIn}
+              onClick={handleSignUp}
             >
               SIGN UP
             </button>
             <button
               className="rounded-lg bg-brand-accent-500 px-6 py-2 text-brand-primary-500"
-              onClick={handleSignUp}
+              onClick={handleSignIn}
             >
               SIGN IN
             </button>
