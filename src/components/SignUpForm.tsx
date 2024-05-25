@@ -21,9 +21,19 @@ export const SignUpForm: React.FC = () => {
     },
   })
 
-  const handleSignUp = (data: signUpFormSchemaType) => {
+  const handleSignUp = async (data: signUpFormSchemaType) => {
     try {
-      console.log(data)
+      await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          name: data.name,
+        }),
+      })
 
       reset()
     } catch (error) {
