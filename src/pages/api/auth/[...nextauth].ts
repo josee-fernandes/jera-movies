@@ -2,7 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import FacebookProvider from 'next-auth/providers/facebook'
 
+import { PrismaAdapter } from '@/lib/auth/prisma-adapter'
+
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(),
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID ?? '',
@@ -45,7 +48,5 @@ export const authOptions: NextAuthOptions = {
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  // Do stuff here ...
-
   return await NextAuth(req, res, authOptions)
 }
