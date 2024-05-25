@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Anton, Playfair_Display as PlayfairDisplay } from 'next/font/google'
 import localFont from 'next/font/local'
+import { SessionProvider } from 'next-auth/react'
 
 import { useIsomorphicLayoutEffect } from '@/hooks'
 
@@ -22,12 +23,19 @@ const playfairDisplay = PlayfairDisplay({
   variable: '--font-playfair-display',
 })
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+const App: React.FC<AppProps> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   useIsomorphicLayoutEffect(() => {
     document.body.className = `overflow-x-hidden bg-brand-primary font-swansea ${anton.variable} ${swansea.variable} ${playfairDisplay.variable}`
   }, [])
 
-  return <Component {...pageProps} />
+  return (
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  )
 }
 
 App.displayName = 'App'

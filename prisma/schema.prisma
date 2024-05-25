@@ -22,3 +22,32 @@ model User {
 
   @@map("user")
 }
+
+// model Profile {
+//   id     String @id @default(uuid())
+//   name   String
+//   avatar String
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @default(now())
+
+//   @@map("profile")
+// }
+
+// model Movie {
+//   id            String  @id @default(uuid())
+//   name          String
+//   cover         String
+//   saved         Boolean
+//   watched       Boolean
+//   themoviedb_id String
+
+//   @@map("movie")
+// }
+
+// model ProfileMovie {
+//   profile_id String
+//   movie_id   String
+
+//   @@map("profile_movie")
+// }

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { signIn, useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -10,6 +11,8 @@ const signInFormSchema = z.object({
 type signInFormSchemaType = z.infer<typeof signInFormSchema>
 
 export const SignInForm: React.FC = () => {
+  const session = useSession()
+
   const { register, handleSubmit, reset } = useForm<signInFormSchemaType>({
     defaultValues: {
       email: '',
@@ -22,6 +25,16 @@ export const SignInForm: React.FC = () => {
       console.log(data)
 
       reset()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleFacebookAuth = async () => {
+    try {
+      await signIn('facebook')
+
+      console.log({ session })
     } catch (error) {
       console.error(error)
     }
@@ -63,16 +76,17 @@ export const SignInForm: React.FC = () => {
 
       <div className="flex w-full flex-col items-center gap-3">
         <button
-          type="button"
-          className="h-[3.375rem] w-full rounded-lg bg-social-facebook px-6 py-2 font-bold  text-brand-primary-500 md:h-[4.5rem]"
-        >
-          FACEBOOK
-        </button>
-        <button
           type="submit"
           className="h-[3.375rem] w-full rounded-lg bg-brand-secondary-500 px-6 py-2 font-bold  text-brand-primary-500 md:h-[4.5rem]"
         >
-          FINISH
+          ENTER
+        </button>
+        <button
+          type="button"
+          className="h-[3.375rem] w-full rounded-lg bg-social-facebook px-6 py-2 font-bold  text-brand-primary-500 md:h-[4.5rem]"
+          onClick={handleFacebookAuth}
+        >
+          FACEBOOK
         </button>
         <Link
           href="/sign-up"
