@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { NextSeo } from 'next-seo'
 import logo from 'public/logo.svg'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -55,96 +56,97 @@ const Browse: NextPage = () => {
     return <Profiles onProfileSelect={onProfileSelect} />
 
   return (
-    <div className="relative min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
-      {/* {profileSelection && <Profiles onProfileSelect={onProfileSelect} />} */}
-
-      <Menu
-        isOpen={isMenuOpen}
-        onClose={handleToggleIsMenuOpen}
-        onProfileSelection={handleChangeProfile}
-      />
-
-      <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
-        <Image
-          src={logo}
-          alt="Jera Movies logo"
-          className="h-10 w-max"
-          priority
+    <>
+      <NextSeo title="Browse your favorite movies | Jera Movies" noindex />
+      <div className="relative min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
+        <Menu
+          isOpen={isMenuOpen}
+          onClose={handleToggleIsMenuOpen}
+          onProfileSelection={handleChangeProfile}
         />
-        <div className="flex items-center gap-4">
-          <div role="button" onClick={handleToggleIsMenuOpen}>
-            {currentProfile?.avatar_url && (
-              <Avatar
-                src={currentProfile.avatar_url}
-                alt={currentProfile.name}
-                className="size-10 overflow-hidden rounded-full"
-              />
-            )}
+
+        <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
+          <Image
+            src={logo}
+            alt="Jera Movies logo"
+            className="h-10 w-max"
+            priority
+          />
+          <div className="flex items-center gap-4">
+            <div role="button" onClick={handleToggleIsMenuOpen}>
+              {currentProfile?.avatar_url && (
+                <Avatar
+                  src={currentProfile.avatar_url}
+                  alt={currentProfile.name}
+                  className="size-10 overflow-hidden rounded-full"
+                />
+              )}
+            </div>
+          </div>
+        </nav>
+
+        <div className="mx-auto mt-9 flex w-[95%] max-w-[400px] flex-col items-center justify-center gap-10">
+          <h2 className="text-center font-anton text-3xl md:text-[4.6vw] lg:text-5xl">
+            DISCOVER MILLIONS OF MOVIES EXPLORING
+          </h2>
+          <SearchForm profileId={currentProfile.id} />
+        </div>
+
+        {query && (
+          <div>
+            <div className="mx-auto mt-20 flex w-[95%] max-w-[1200px] flex-col items-center gap-4 md:flex-row">
+              <span>FOUND MOVIES:</span>
+            </div>
+            <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
+              <SearchedMovies profileId={currentProfile.id} />
+            </div>
+          </div>
+        )}
+
+        <div className="mx-auto mt-20 flex w-[95%] max-w-[1200px] flex-col items-center gap-4 md:flex-row">
+          <span>FILTER BY:</span>
+          <div className="flex flex-wrap justify-center gap-4 md:justify-start">
+            <Link
+              href={`${pathname}?${createQueryString('filter', 'suggestions')}`}
+              scroll={false}
+              className={cn(
+                filter === 'suggestions'
+                  ? 'text-brand-accent-500 font-bold'
+                  : 'text-brand-secondary-500',
+              )}
+            >
+              SUGGESTIONS
+            </Link>
+            <Link
+              href={`${pathname}?${createQueryString('filter', 'saved')}`}
+              scroll={false}
+              className={cn(
+                filter === 'saved'
+                  ? 'text-brand-accent-500 font-bold'
+                  : 'text-brand-secondary-500',
+              )}
+            >
+              SAVED FOR LATER
+            </Link>
+            <Link
+              href={`${pathname}?${createQueryString('filter', 'watched')}`}
+              scroll={false}
+              className={cn(
+                filter === 'watched'
+                  ? 'text-brand-accent-500 font-bold'
+                  : 'text-brand-secondary-500',
+              )}
+            >
+              WATCHED
+            </Link>
           </div>
         </div>
-      </nav>
 
-      <div className="mx-auto mt-9 flex w-[95%] max-w-[400px] flex-col items-center justify-center gap-10">
-        <h2 className="text-center font-anton text-3xl md:text-[4.6vw] lg:text-5xl">
-          DISCOVER MILLIONS OF MOVIES EXPLORING
-        </h2>
-        <SearchForm profileId={currentProfile.id} />
-      </div>
-
-      {query && (
-        <div>
-          <div className="mx-auto mt-20 flex w-[95%] max-w-[1200px] flex-col items-center gap-4 md:flex-row">
-            <span>FOUND MOVIES:</span>
-          </div>
-          <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
-            <SearchedMovies profileId={currentProfile.id} />
-          </div>
-        </div>
-      )}
-
-      <div className="mx-auto mt-20 flex w-[95%] max-w-[1200px] flex-col items-center gap-4 md:flex-row">
-        <span>FILTER BY:</span>
-        <div className="flex flex-wrap justify-center gap-4 md:justify-start">
-          <Link
-            href={`${pathname}?${createQueryString('filter', 'suggestions')}`}
-            scroll={false}
-            className={cn(
-              filter === 'suggestions'
-                ? 'text-brand-accent-500 font-bold'
-                : 'text-brand-secondary-500',
-            )}
-          >
-            SUGGESTIONS
-          </Link>
-          <Link
-            href={`${pathname}?${createQueryString('filter', 'saved')}`}
-            scroll={false}
-            className={cn(
-              filter === 'saved'
-                ? 'text-brand-accent-500 font-bold'
-                : 'text-brand-secondary-500',
-            )}
-          >
-            SAVED FOR LATER
-          </Link>
-          <Link
-            href={`${pathname}?${createQueryString('filter', 'watched')}`}
-            scroll={false}
-            className={cn(
-              filter === 'watched'
-                ? 'text-brand-accent-500 font-bold'
-                : 'text-brand-secondary-500',
-            )}
-          >
-            WATCHED
-          </Link>
+        <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
+          <Movies profileId={currentProfile.id} />
         </div>
       </div>
-
-      <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
-        <Movies profileId={currentProfile.id} />
-      </div>
-    </div>
+    </>
   )
 }
 

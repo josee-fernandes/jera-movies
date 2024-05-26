@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import { Anton, Playfair_Display as PlayfairDisplay } from 'next/font/google'
 import localFont from 'next/font/local'
 import { SessionProvider } from 'next-auth/react'
+import { DefaultSeo } from 'next-seo'
 import { Toaster } from 'sonner'
 
 import { useIsomorphicLayoutEffect } from '@/hooks'
@@ -34,12 +35,20 @@ const App: React.FC<AppProps> = ({
   }, [])
 
   return (
-    <SessionProvider session={session}>
-      <QueryProvider>
+    <QueryProvider>
+      <SessionProvider session={session}>
+        <DefaultSeo
+          openGraph={{
+            type: 'website',
+            locale: 'pt_BR',
+            url: 'https://jeramovies.vercel.app/',
+            siteName: 'Jera Movies',
+          }}
+        />
         <Toaster richColors />
         <Component {...pageProps} />
-      </QueryProvider>
-    </SessionProvider>
+      </SessionProvider>
+    </QueryProvider>
   )
 }
 
