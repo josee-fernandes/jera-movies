@@ -23,7 +23,7 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
     isLoading: isLoadingProfiles,
     error: profilesError,
   } = useQuery({
-    queryKey: ['profiles', session.data?.user.id],
+    queryKey: ['profiles', userId],
     queryFn: () => getProfiles({ userId }),
   })
 
@@ -51,8 +51,6 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
   if (isLoadingProfiles) return <h1>Loading profiles ...</h1>
 
   if (profilesError) return <h1>Profiles error: ${profilesError.message}</h1>
-
-  console.log({ profiles })
 
   return (
     <div className="fixed left-0 top-0 z-10 flex size-full h-screen flex-col items-center justify-center bg-brand-primary-500">

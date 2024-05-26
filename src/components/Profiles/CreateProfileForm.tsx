@@ -1,8 +1,15 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { createProfile } from '@/api/create-profile'
+import { GetProfilesResponse } from '@/api/get-profiles'
+
+import { Icon } from '../Icon'
+
 interface CreateProfileFormProps {
-  onCreate: (params: ProfileType) => void
+  onCreate: () => void
 }
 
 const createProfileFormSchema = z.object({
@@ -14,17 +21,54 @@ type CreateProfileFormSchemaType = z.infer<typeof createProfileFormSchema>
 export const CreateProfileForm: React.FC<CreateProfileFormProps> = ({
   onCreate,
 }) => {
-  const { register, handleSubmit } = useForm<CreateProfileFormSchemaType>({})
+  const session = useSession()
+  const userId = session.data?.user.id ?? ''
 
-  const handleCreateProfile = (data: CreateProfileFormSchemaType) => {
-    const profile: ProfileType = {
-      id: '3',
-      avatar: '/avatar-3.png',
-      name: data.name,
-      userId: '1',
+  const { register, handleSubmit } = useForm<CreateProfileFormSchemaType>({
+    defaultValues: {
+      name: '',
+    },
+  })
+
+  const queryClient = useQueryClient()
+
+  const updateProfilesOnCache = (profile: ProfileType) => {
+    const profilesCache = queryClient.getQueriesData<GetProfilesResponse>({
+      queryKey: ['profiles', userId],
+    })
+
+    for (const [cacheKey, cacheData] of profilesCache) {
+      if (!cacheData) {
+        return
+      }
+
+      queryClient.setQueryData<GetProfilesResponse>(cacheKey, [
+        ...cacheData,
+        profile,
+      ])
     }
+  }
 
-    onCreate(profile)
+  const { mutateAsync: createProfileFn, isPending: isCreatingProfile } =
+    useMutation({
+      mutationFn: createProfile,
+      async onSuccess(profile) {
+        updateProfilesOnCache(profile)
+      },
+    })
+
+  const handleCreateProfile = async (data: CreateProfileFormSchemaType) => {
+    try {
+      await createProfileFn({
+        name: data.name,
+        avatarUrl: '/avatar-1.png',
+        userId,
+      })
+
+      onCreate()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -47,8 +91,13 @@ export const CreateProfileForm: React.FC<CreateProfileFormProps> = ({
         <button
           type="submit"
           className="w-max rounded-lg bg-brand-accent-500 px-6 py-2 font-bold text-brand-primary-500 transition-all hover:bg-brand-accent-900"
+          disabled={isCreatingProfile}
         >
-          CREATE
+          {isCreatingProfile ? (
+            <Icon name="loader-circle" className="animate-spin" />
+          ) : (
+            'CREATE'
+          )}
         </button>
       </div>
     </form>

@@ -15,7 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const profileMovies = await prisma.movie.findMany({
       where: {
         ProfileMovie: {
-          every: {
+          some: {
             profile_id: profileId.toString(),
           },
         },
@@ -29,7 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const genres = await prisma.genre.findMany({
           where: {
             MovieGenre: {
-              every: {
+              some: {
                 movie_id: movie.id,
               },
             },
@@ -69,9 +69,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           },
         )
 
+        console.log('⭐ dentro')
+
         return res.status(200).json(movies)
       }
     }
+
+    console.log('🍿 fora')
 
     // If there is no data for custom suggestions, it shows trending movies on the day
 
