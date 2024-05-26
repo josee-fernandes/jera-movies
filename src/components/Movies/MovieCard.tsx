@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Suspense, useCallback } from 'react'
 
 import { GetMoviesResponse } from '@/api/get-movies'
 import { toggleMovieSaved } from '@/api/toggle-movie-saved'
@@ -14,7 +15,10 @@ interface MovieCardProps {
   profileId: string
 }
 
-export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
+const MovieCardFC: React.FC<MovieCardProps> = ({ movie, profileId }) => {
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter')
+
   const queryClient = useQueryClient()
 
   const updateMovieOnCache = (
@@ -23,7 +27,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
     watched: boolean,
   ) => {
     const moviesCache = queryClient.getQueriesData<GetMoviesResponse>({
-      queryKey: ['movies', profileId],
+      queryKey: ['movies', profileId, filter],
     })
 
     for (const [cacheKey, cacheData] of moviesCache) {
@@ -114,6 +118,16 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
         </div>
       </div>
     </div>
+  )
+}
+
+MovieCardFC.displayName = 'MovieCardFC'
+
+export const MovieCard: React.FC<MovieCardProps> = (props) => {
+  return (
+    <Suspense>
+      <MovieCardFC {...props} />
+    </Suspense>
   )
 }
 

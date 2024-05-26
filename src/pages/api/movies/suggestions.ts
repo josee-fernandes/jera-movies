@@ -69,13 +69,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           },
         )
 
-        console.log('⭐ dentro')
-
         return res.status(200).json(movies)
       }
     }
-
-    console.log('🍿 fora')
 
     // If there is no data for custom suggestions, it shows trending movies on the day
 

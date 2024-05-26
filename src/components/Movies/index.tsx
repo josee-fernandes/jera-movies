@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'next/navigation'
+import { Suspense, useMemo } from 'react'
 
 import { getMovies } from '@/api/get-movies'
+import { getSavedMovies } from '@/api/get-saved-movies'
+import { getWatchedMovies } from '@/api/get-watched-movies'
 
 import { MovieCard } from './MovieCard'
 
@@ -8,14 +12,30 @@ interface MoviesProps {
   profileId: string
 }
 
-export const Movies: React.FC<MoviesProps> = ({ profileId }) => {
+const MoviesFC: React.FC<MoviesProps> = ({ profileId }) => {
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter')
+
+  const moviesQueryFn = useMemo(() => {
+    switch (filter) {
+      case 'suggestions':
+        return getMovies
+      case 'saved':
+        return getSavedMovies
+      case 'watched':
+        return getWatchedMovies
+      default:
+        return getMovies
+    }
+  }, [filter])
+
   const {
     data: movies,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['movies', profileId],
-    queryFn: () => getMovies({ profileId }),
+    queryKey: ['movies', profileId, filter],
+    queryFn: () => moviesQueryFn({ profileId }),
   })
 
   if (isLoading) return <h1>Loading movies ...</h1>
@@ -32,6 +52,16 @@ export const Movies: React.FC<MoviesProps> = ({ profileId }) => {
         />
       ))}
     </div>
+  )
+}
+
+MoviesFC.displayName = 'MoviesFC'
+
+export const Movies: React.FC<MoviesProps> = (props) => {
+  return (
+    <Suspense>
+      <MoviesFC {...props} />
+    </Suspense>
   )
 }
 
