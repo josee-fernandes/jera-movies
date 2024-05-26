@@ -1,9 +1,9 @@
 import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import logo from 'public/logo.svg'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Avatar } from '@/components/Avatar'
 import { Movies } from '@/components/Movies'
@@ -13,6 +13,7 @@ import { SearchForm } from '@/components/SearchForm'
 import { cn } from '@/lib/utils'
 
 const Browse: NextPage = () => {
+  const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const filter = searchParams.get('filter') ?? 'suggestions'
@@ -39,6 +40,10 @@ const Browse: NextPage = () => {
     },
     [searchParams],
   )
+
+  useEffect(() => {
+    router.push(pathname)
+  }, [currentProfile, pathname, router])
 
   if (!currentProfile || profileSelection)
     return <Profiles onProfileSelect={onProfileSelect} />
