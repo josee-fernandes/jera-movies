@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import { GetMoviesResponse } from '@/api/get-movies'
 import { toggleMovieSaved } from '@/api/toggle-movie-saved'
+import { toggleMovieWatched } from '@/api/toggle-movie-watched'
 import { cn } from '@/lib/utils'
 
 import { Icon } from '../Icon'
@@ -15,9 +16,6 @@ interface MovieCardProps {
 
 export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
   const queryClient = useQueryClient()
-
-  // const [saved, setSaved] = useState(movie.saved)
-  const [watched, setWatched] = useState(movie.watched)
 
   const updateMovieOnCache = (
     movieId: string,
@@ -51,14 +49,23 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
       },
     })
 
+  const {
+    mutateAsync: toggleMovieWatchedFn,
+    isPending: isTogglingMovieWatched,
+  } = useMutation({
+    mutationFn: toggleMovieWatched,
+    async onSuccess(movie) {
+      updateMovieOnCache(movie!.themoviedb_id, movie!.saved, movie!.watched)
+    },
+  })
+
   const handleToggleSaved = useCallback(() => {
     toggleMovieSavedFn({ movie, profileId })
-    // setSaved((oldSaved) => !oldSaved)
   }, [movie, profileId, toggleMovieSavedFn])
 
   const handleToggleWatched = useCallback(() => {
-    setWatched((oldWatched) => !oldWatched)
-  }, [])
+    toggleMovieWatchedFn({ movie, profileId })
+  }, [movie, profileId, toggleMovieWatchedFn])
 
   return (
     <div className="flex w-full max-w-56 flex-col gap-2.5">
@@ -77,12 +84,18 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
         <h4 className="uppercase text-brand-secondary-500">{movie.title}</h4>
         <div className="flex gap-3">
           <button onClick={handleToggleWatched}>
-            <Icon
-              name="check-check"
-              className={cn(
-                watched ? 'text-brand-accent-500' : 'text-brand-secondary-500',
-              )}
-            />
+            {isTogglingMovieWatched ? (
+              <Icon name="loader-circle" className="animate-spin" />
+            ) : (
+              <Icon
+                name="check-check"
+                className={cn(
+                  movie.watched
+                    ? 'text-brand-accent-500'
+                    : 'text-brand-secondary-500',
+                )}
+              />
+            )}
           </button>
           <button onClick={handleToggleSaved}>
             {isTogglingMovieSaved ? (
