@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react'
 
 import { Avatar } from '@/components/Avatar'
 import { Movies } from '@/components/Movies'
+import { SearchedMovies } from '@/components/Movies/SearchMovies'
 import { Profiles } from '@/components/Profiles'
 import { SearchForm } from '@/components/SearchForm'
 import { cn } from '@/lib/utils'
@@ -14,6 +15,7 @@ import { cn } from '@/lib/utils'
 const Browse: NextPage = () => {
   const params = useSearchParams()
   const filter = params.get('filter') ?? 'suggestions'
+  const query = params.get('query') ?? ''
 
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null)
   const [profileSelection, setProfileSelection] = useState(true)
@@ -27,9 +29,12 @@ const Browse: NextPage = () => {
     setProfileSelection(true)
   }, [])
 
+  if (!currentProfile || profileSelection)
+    return <Profiles onProfileSelect={onProfileSelect} />
+
   return (
     <div className="min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
-      {profileSelection && <Profiles onProfileSelect={onProfileSelect} />}
+      {/* {profileSelection && <Profiles onProfileSelect={onProfileSelect} />} */}
 
       <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
         <Image
@@ -53,8 +58,19 @@ const Browse: NextPage = () => {
         <h2 className="text-center font-anton text-3xl md:text-[4.6vw] lg:text-5xl">
           DISCOVER MILLIONS OF MOVIES EXPLORING
         </h2>
-        <SearchForm />
+        <SearchForm profileId={currentProfile.id} />
       </div>
+
+      {query && (
+        <div>
+          <div className="mx-auto mt-20 flex w-[95%] max-w-[1200px] flex-col items-center gap-4 md:flex-row">
+            <span>FOUND MOVIES:</span>
+          </div>
+          <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
+            <SearchedMovies profileId={currentProfile.id} />
+          </div>
+        </div>
+      )}
 
       <div className="mx-auto mt-20 flex w-[95%] max-w-[1200px] flex-col items-center gap-4 md:flex-row">
         <span>FILTER BY:</span>
@@ -92,11 +108,9 @@ const Browse: NextPage = () => {
         </div>
       </div>
 
-      {currentProfile && (
-        <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
-          <Movies profileId={currentProfile.id} />
-        </div>
-      )}
+      <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
+        <Movies profileId={currentProfile.id} />
+      </div>
     </div>
   )
 }
