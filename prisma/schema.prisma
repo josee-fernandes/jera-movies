@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -76,22 +73,25 @@ model Profile {
 }
 
 model ProfileMovie {
-  profile_id String @unique
-  movie_id   String @unique
+  profile_id String
+  movie_id   String
 
   profile Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade)
   movie   Movie   @relation(fields: [movie_id], references: [id], onDelete: Cascade)
 
+  @@id([profile_id, movie_id])
   @@map("profile_movie")
 }
 
 model Movie {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   title         String
   cover         String
   saved         Boolean
   watched       Boolean
-  themoviedb_id String  @unique
+  themoviedb_id Int      @unique
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
   ProfileMovie ProfileMovie[]
   MovieGenre   MovieGenre[]
@@ -100,18 +100,21 @@ model Movie {
 }
 
 model MovieGenre {
-  movie_id String @unique
-  genre_id String @unique
+  movie_id String
+  genre_id String
 
   movie Movie @relation(fields: [movie_id], references: [id], onDelete: Cascade)
   genre Genre @relation(fields: [genre_id], references: [id], onDelete: Cascade)
 
+  @@id([movie_id, genre_id])
   @@map("movie_genre")
 }
 
 model Genre {
-  id                  String @id @default(uuid())
-  themoviedb_genre_id String @unique
+  id                  String   @id @default(uuid())
+  themoviedb_genre_id Int      @unique
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
 
   MovieGenre MovieGenre[]
 

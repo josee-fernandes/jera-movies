@@ -24,7 +24,13 @@ export const Movies: React.FC<MoviesProps> = ({ profileId }) => {
 
   return (
     <div className="flex w-full flex-wrap justify-center gap-5 md:justify-start">
-      {movies?.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
+      {movies?.map((movie) => (
+        <MovieCard
+          key={movie.id ?? movie.themoviedb_id}
+          movie={movie}
+          profileId={profileId}
+        />
+      ))}
     </div>
   )
 }

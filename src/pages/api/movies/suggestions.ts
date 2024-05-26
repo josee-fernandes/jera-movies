@@ -23,15 +23,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     })
 
     if (profileMovies.length) {
-      const movieCategories: {
-        id: string
-        category_id: string
-      }[] = []
+      let movieGenres: number[] = []
 
       for (const movie of profileMovies) {
-        const categories = await prisma.category.findMany({
+        const genres = await prisma.genre.findMany({
           where: {
-            MovieCategory: {
+            MovieGenre: {
               every: {
                 movie_id: movie.id,
               },
@@ -39,25 +36,37 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           },
         })
 
-        if (categories.length) {
-          movieCategories.concat(categories)
+        if (genres.length) {
+          const ids = genres.map((genre) => genre.themoviedb_genre_id)
+
+          movieGenres = movieGenres.concat(ids)
         }
       }
 
-      if (movieCategories.length) {
+      if (movieGenres.length) {
         const response = await theMovieDbApi.get(
-          `/discover/movie?with_genres=${movieCategories.join('|')}`,
+          `/discover/movie?with_genres=${movieGenres.join('|')}`,
         )
 
         const movies: MovieType[] = response.data?.results?.map(
-          (movie: MovieDb) => ({
-            id: movie.id,
-            title: movie.title,
-            cover: `${THEMOVIEDB_IMAGE_BASE_URL}${movie.poster_path}`,
-            saved: false,
-            watched: false,
-            themoviedb_id: movie.id,
-          }),
+          (movie: MovieDb) => {
+            const profileMovie = profileMovies.find(
+              (profileMovie) => profileMovie.themoviedb_id === movie.id,
+            )
+
+            if (profileMovie)
+              return { ...profileMovie, themoviedb_genres_ids: movie.genre_ids }
+
+            return {
+              id: movie.id,
+              title: movie.title,
+              cover: `${THEMOVIEDB_IMAGE_BASE_URL}${movie.poster_path}`,
+              saved: false,
+              watched: false,
+              themoviedb_id: movie.id,
+              themoviedb_genres_ids: movie.genre_ids,
+            }
+          },
         )
 
         return res.status(200).json(movies)
@@ -70,12 +79,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const movies: MovieType[] = response.data?.results?.map(
       (movie: MovieDb) => ({
-        id: movie.id,
+        id: null,
         title: movie.title,
         cover: `${THEMOVIEDB_IMAGE_BASE_URL}${movie.poster_path}`,
         saved: false,
         watched: false,
         themoviedb_id: movie.id,
+        themoviedb_genres_ids: movie.genre_ids,
       }),
     )
 

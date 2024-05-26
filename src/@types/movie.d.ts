@@ -5,6 +5,7 @@ interface MovieType {
   watched: boolean
   saved: boolean
   themoviedb_id: string
+  themoviedb_genres_ids: number[]
 }
 
 interface MovieDb {

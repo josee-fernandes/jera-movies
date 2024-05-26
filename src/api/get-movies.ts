@@ -4,7 +4,7 @@ interface GetMoviesFnParams {
   profileId: string
 }
 
-type GetMoviesResponse = MovieType[]
+export type GetMoviesResponse = MovieType[]
 
 type GetMoviesFnType = (params: GetMoviesFnParams) => Promise<GetMoviesResponse>
 

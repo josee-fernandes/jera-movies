@@ -1,21 +1,60 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useCallback, useState } from 'react'
 
+import { GetMoviesResponse } from '@/api/get-movies'
+import { toggleMovieSaved } from '@/api/toggle-movie-saved'
 import { cn } from '@/lib/utils'
 
 import { Icon } from '../Icon'
 
 interface MovieCardProps {
   movie: MovieType
+  profileId: string
 }
 
-export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-  const [saved, setSaved] = useState(movie.saved)
+export const MovieCard: React.FC<MovieCardProps> = ({ movie, profileId }) => {
+  const queryClient = useQueryClient()
+
+  // const [saved, setSaved] = useState(movie.saved)
   const [watched, setWatched] = useState(movie.watched)
 
+  const updateMovieOnCache = (
+    movieId: string,
+    saved: boolean,
+    watched: boolean,
+  ) => {
+    const moviesCache = queryClient.getQueriesData<GetMoviesResponse>({
+      queryKey: ['movies', profileId],
+    })
+
+    for (const [cacheKey, cacheData] of moviesCache) {
+      if (!cacheData) {
+        return
+      }
+
+      queryClient.setQueryData<GetMoviesResponse>(cacheKey, [
+        ...cacheData.map((movie) =>
+          movie.themoviedb_id === movieId
+            ? { ...movie, saved, watched }
+            : movie,
+        ),
+      ])
+    }
+  }
+
+  const { mutateAsync: toggleMovieSavedFn, isPending: isTogglingMovieSaved } =
+    useMutation({
+      mutationFn: toggleMovieSaved,
+      async onSuccess(movie) {
+        updateMovieOnCache(movie!.themoviedb_id, movie!.saved, movie!.watched)
+      },
+    })
+
   const handleToggleSaved = useCallback(() => {
-    setSaved((oldSaved) => !oldSaved)
-  }, [])
+    toggleMovieSavedFn({ movie, profileId })
+    // setSaved((oldSaved) => !oldSaved)
+  }, [movie, profileId, toggleMovieSavedFn])
 
   const handleToggleWatched = useCallback(() => {
     setWatched((oldWatched) => !oldWatched)
@@ -46,14 +85,18 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             />
           </button>
           <button onClick={handleToggleSaved}>
-            <Icon
-              name="bookmark"
-              className={cn(
-                saved
-                  ? 'text-brand-accent-500 fill-brand-accent-500'
-                  : 'text-brand-secondary-500',
-              )}
-            />
+            {isTogglingMovieSaved ? (
+              <Icon name="loader-circle" className="animate-spin" />
+            ) : (
+              <Icon
+                name="bookmark"
+                className={cn(
+                  movie.saved
+                    ? 'text-brand-accent-500 fill-brand-accent-500'
+                    : 'text-brand-secondary-500',
+                )}
+              />
+            )}
           </button>
         </div>
       </div>
