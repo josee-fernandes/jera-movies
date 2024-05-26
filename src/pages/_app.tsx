@@ -6,6 +6,7 @@ import localFont from 'next/font/local'
 import { SessionProvider } from 'next-auth/react'
 
 import { useIsomorphicLayoutEffect } from '@/hooks'
+import { QueryProvider } from '@/lib/react-query'
 
 const anton = Anton({
   subsets: ['latin'],
@@ -33,7 +34,9 @@ const App: React.FC<AppProps> = ({
 
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <QueryProvider>
+        <Component {...pageProps} />
+      </QueryProvider>
     </SessionProvider>
   )
 }

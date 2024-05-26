@@ -19,7 +19,7 @@ export const Profile: React.FC<ProfileProps> = ({ profile, onSelect }) => {
     >
       <div className="absolute z-[1] size-full rounded-full border-8 border-transparent transition-all group-hover:border-brand-secondary-500" />
       <Image
-        src={profile.avatar}
+        src={profile.avatar_url}
         alt={profile.name}
         fill
         className="pointer-events-none select-none"

@@ -5,12 +5,43 @@ import { prisma } from '../prisma'
 export function PrismaAdapter(): Adapter {
   return {
     async createUser(user) {
+      const userExists = await prisma.user.findUnique({
+        where: {
+          email: user.email,
+        },
+      })
+
+      if (userExists) {
+        const prismaUser = await prisma.user.update({
+          where: { email: user.email },
+          data: {
+            avatar_url: user.avatar_url,
+          },
+        })
+
+        return {
+          id: prismaUser.id,
+          email: prismaUser.email,
+          name: prismaUser.name,
+          avatar_url: prismaUser.avatar_url!,
+          emailVerified: null,
+        }
+      }
+
       const prismaUser = await prisma.user.create({
         data: {
           email: user.email,
           password: '', // não retorna do facebook, temporariamente vazia
           name: user.name!,
           avatar_url: user.avatar_url,
+        },
+      })
+
+      await prisma.profile.create({
+        data: {
+          name: prismaUser.name,
+          avatar_url: prismaUser.avatar_url!,
+          user_id: prismaUser.id,
         },
       })
 

@@ -24,11 +24,13 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    signIn: async () => {
-      return '/browse'
+    session: async ({ session, user }) => {
+      return { ...session, user }
     },
-    session: async ({ session }) => {
-      return session
+    redirect: async (params) => {
+      if (params.url.includes('/sign-in')) return `${params.baseUrl}/browse`
+
+      return params.url
     },
   },
 }

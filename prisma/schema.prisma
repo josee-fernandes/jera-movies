@@ -21,13 +21,13 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  Profile  Profile[]
 
   @@map("user")
 }
 
 model Account {
   id                  String   @id @default(cuid())
-  user_id             String
   type                String
   provider            String
   provider_account_id String
@@ -40,6 +40,7 @@ model Account {
   session_state       String?
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
+  user_id             String   @unique
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
@@ -50,41 +51,49 @@ model Account {
 model Session {
   id            String   @id @default(cuid())
   session_token String   @unique
-  user_id       String
   expires       DateTime
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  user_id       String   @unique
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("session")
 }
 
-// model Profile {
-//   id     String @id @default(uuid())
-//   name   String
-//   avatar String
+model Profile {
+  id         String   @id @default(uuid())
+  name       String
+  avatar_url String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_id    String   @unique
 
-//   created_at DateTime @default(now())
-//   updated_at DateTime @default(now())
+  user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  ProfileMovie ProfileMovie[]
 
-//   @@map("profile")
-// }
+  @@map("profile")
+}
 
-// model Movie {
-//   id            String  @id @default(uuid())
-//   name          String
-//   cover         String
-//   saved         Boolean
-//   watched       Boolean
-//   themoviedb_id String
+model Movie {
+  id            String  @id @default(uuid())
+  name          String
+  cover         String
+  saved         Boolean
+  watched       Boolean
+  themoviedb_id String
 
-//   @@map("movie")
-// }
+  ProfileMovie ProfileMovie[]
 
-// model ProfileMovie {
-//   profile_id String
-//   movie_id   String
+  @@map("movie")
+}
 
-//   @@map("profile_movie")
-// }
+model ProfileMovie {
+  profile_id String @unique
+  movie_id   String @unique
+
+  profile Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  movie   Movie   @relation(fields: [movie_id], references: [id], onDelete: Cascade)
+
+  @@map("profile_movie")
+}

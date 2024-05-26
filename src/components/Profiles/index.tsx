@@ -1,4 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useCallback, useState } from 'react'
+
+import { getProfiles } from '@/api/get-profiles'
 
 import { Avatar } from '../Avatar'
 import { Icon } from '../Icon'
@@ -6,31 +10,42 @@ import { CreateProfileButton } from './CreateProfileButton'
 import { CreateProfileForm } from './CreateProfileForm'
 import { Profile } from './Profile'
 
-const sampleProfiles: ProfileType[] = [
-  {
-    id: '1',
-    name: 'Profile 1',
-    avatar: '/avatar-1.png',
-    userId: '1',
-  },
-  {
-    id: '2',
-    name: 'Profile 2',
-    avatar: '/avatar-2.png',
-    userId: '1',
-  },
-]
+// const sampleProfiles: ProfileType[] = [
+//   {
+//     id: '1',
+//     name: 'Profile 1',
+//     avatar: '/avatar-1.png',
+//     userId: '1',
+//   },
+//   {
+//     id: '2',
+//     name: 'Profile 2',
+//     avatar: '/avatar-2.png',
+//     userId: '1',
+//   },
+// ]
 
 interface ProfilesProps {
   onProfileSelect: (params: ProfileType) => void
 }
 
 export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
-  const [profiles, setProfiles] = useState(sampleProfiles)
+  const session = useSession()
+  const userId = session.data?.user.id ?? ''
+
+  const {
+    data: profiles,
+    isLoading: isLoadingProfiles,
+    error: profilesError,
+  } = useQuery({
+    queryKey: ['profiles', session.data?.user.id],
+    queryFn: () => getProfiles({ userId }),
+  })
+
   const [creatingProfile, setCreatingProfile] = useState(false)
 
-  const onCreate = (newProfile: ProfileType) => {
-    setProfiles((oldProfiles) => [...oldProfiles, newProfile])
+  const onCreate = () => {
+    // setProfiles((oldProfiles) => [...oldProfiles, newProfile])
 
     handleBack()
   }
@@ -49,6 +64,12 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
   const handleBack = useCallback(() => {
     setCreatingProfile(false)
   }, [])
+
+  if (isLoadingProfiles) return <h1>Loading profiles ...</h1>
+
+  if (profilesError) return <h1>Profiles error: ${profilesError.message}</h1>
+
+  console.log({ profiles })
 
   return (
     <div className="fixed left-0 top-0 z-10 flex size-full h-screen flex-col items-center justify-center bg-brand-primary-500">
@@ -83,11 +104,11 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
             WHO&apos;S BROWSING?
           </h3>
           <div className="flex max-w-[1200px] flex-wrap items-center justify-center gap-5">
-            {profiles.map((profile) => (
+            {profiles?.map((profile) => (
               <Profile key={profile.id} profile={profile} onSelect={onSelect} />
             ))}
 
-            {profiles.length < 4 && (
+            {profiles && profiles?.length < 4 && (
               <CreateProfileButton onClick={openCreateProfile} />
             )}
           </div>
