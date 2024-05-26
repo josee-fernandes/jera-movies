@@ -7,6 +7,9 @@ const nextConfig = {
       {
         hostname: 'platform-lookaside.fbsbx.com',
       },
+      {
+        hostname: 'image.tmdb.org',
+      },
     ],
   },
 }

@@ -10,21 +10,6 @@ import { CreateProfileButton } from './CreateProfileButton'
 import { CreateProfileForm } from './CreateProfileForm'
 import { Profile } from './Profile'
 
-// const sampleProfiles: ProfileType[] = [
-//   {
-//     id: '1',
-//     name: 'Profile 1',
-//     avatar: '/avatar-1.png',
-//     userId: '1',
-//   },
-//   {
-//     id: '2',
-//     name: 'Profile 2',
-//     avatar: '/avatar-2.png',
-//     userId: '1',
-//   },
-// ]
-
 interface ProfilesProps {
   onProfileSelect: (params: ProfileType) => void
 }
@@ -45,8 +30,6 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
   const [creatingProfile, setCreatingProfile] = useState(false)
 
   const onCreate = () => {
-    // setProfiles((oldProfiles) => [...oldProfiles, newProfile])
-
     handleBack()
   }
 

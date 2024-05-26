@@ -75,19 +75,6 @@ model Profile {
   @@map("profile")
 }
 
-model Movie {
-  id            String  @id @default(uuid())
-  name          String
-  cover         String
-  saved         Boolean
-  watched       Boolean
-  themoviedb_id String
-
-  ProfileMovie ProfileMovie[]
-
-  @@map("movie")
-}
-
 model ProfileMovie {
   profile_id String @unique
   movie_id   String @unique
@@ -96,4 +83,37 @@ model ProfileMovie {
   movie   Movie   @relation(fields: [movie_id], references: [id], onDelete: Cascade)
 
   @@map("profile_movie")
+}
+
+model Movie {
+  id            String  @id @default(uuid())
+  title         String
+  cover         String
+  saved         Boolean
+  watched       Boolean
+  themoviedb_id String  @unique
+
+  ProfileMovie ProfileMovie[]
+  MovieGenre   MovieGenre[]
+
+  @@map("movie")
+}
+
+model MovieGenre {
+  movie_id String @unique
+  genre_id String @unique
+
+  movie Movie @relation(fields: [movie_id], references: [id], onDelete: Cascade)
+  genre Genre @relation(fields: [genre_id], references: [id], onDelete: Cascade)
+
+  @@map("movie_genre")
+}
+
+model Genre {
+  id                  String @id @default(uuid())
+  themoviedb_genre_id String @unique
+
+  MovieGenre MovieGenre[]
+
+  @@map("genre")
 }

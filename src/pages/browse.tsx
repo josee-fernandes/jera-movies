@@ -32,7 +32,12 @@ const Browse: NextPage = () => {
       {profileSelection && <Profiles onProfileSelect={onProfileSelect} />}
 
       <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
-        <Image src={logo} alt="Jera Movies logo" className="h-10 w-max" />
+        <Image
+          src={logo}
+          alt="Jera Movies logo"
+          className="h-10 w-max"
+          priority
+        />
         <div role="button" onClick={handleChangeProfile}>
           {currentProfile?.avatar_url && (
             <Avatar
@@ -87,9 +92,11 @@ const Browse: NextPage = () => {
         </div>
       </div>
 
-      <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
-        <Movies />
-      </div>
+      {currentProfile && (
+        <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
+          <Movies profileId={currentProfile.id} />
+        </div>
+      )}
     </div>
   )
 }

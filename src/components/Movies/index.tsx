@@ -1,38 +1,30 @@
+import { useQuery } from '@tanstack/react-query'
+
+import { getMovies } from '@/api/get-movies'
+
 import { MovieCard } from './MovieCard'
 
-const movies: MovieType[] = [
-  {
-    id: '1',
-    name: 'MOVIE 1',
-    cover: '/movie.png',
-    saved: false,
-    watched: false,
-    themoviedb_id: '1',
-  },
-  {
-    id: '2',
-    name: 'MOVIE 2',
-    cover: '/movie.png',
-    saved: true,
-    watched: false,
-    themoviedb_id: '1',
-  },
-  {
-    id: '3',
-    name: 'MOVIE 3',
-    cover: '/movie.png',
-    saved: true,
-    watched: true,
-    themoviedb_id: '1',
-  },
-]
+interface MoviesProps {
+  profileId: string
+}
 
-export const Movies: React.FC = () => {
+export const Movies: React.FC<MoviesProps> = ({ profileId }) => {
+  const {
+    data: movies,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['movies', profileId],
+    queryFn: () => getMovies({ profileId }),
+  })
+
+  if (isLoading) return <h1>Loading movies ...</h1>
+
+  if (error) return <h1>Error fetching movies: {error.message}</h1>
+
   return (
     <div className="flex w-full flex-wrap justify-center gap-5 md:justify-start">
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
+      {movies?.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
     </div>
   )
 }

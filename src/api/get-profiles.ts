@@ -18,6 +18,8 @@ type GetProfilesFnType = (
 ) => Promise<GetProfilesResponse[]>
 
 export const getProfiles: GetProfilesFnType = async ({ userId }) => {
+  if (!userId) return []
+
   const response = await api.get(`/profiles?userId=${userId}`)
 
   return response.data ?? []

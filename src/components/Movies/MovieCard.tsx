@@ -25,11 +25,17 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     <div className="flex w-full max-w-56 flex-col gap-2.5">
       <div className="relative h-80 overflow-hidden rounded-[1.25rem]">
         {movie.cover && (
-          <Image src={movie.cover} alt="Movie" fill className="object-cover" />
+          <Image
+            src={movie.cover}
+            alt={movie.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+          />
         )}
       </div>
       <div className="flex justify-between">
-        <h4 className="uppercase text-brand-secondary-500">{movie.name}</h4>
+        <h4 className="uppercase text-brand-secondary-500">{movie.title}</h4>
         <div className="flex gap-3">
           <button onClick={handleToggleWatched}>
             <Icon
