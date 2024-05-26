@@ -1,7 +1,11 @@
+import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
+
+import { signIn as credentialsSignIn } from '@/api/credentials-sign-in'
 
 const signInFormSchema = z.object({
   email: z.string().email(),
@@ -11,20 +15,22 @@ const signInFormSchema = z.object({
 type signInFormSchemaType = z.infer<typeof signInFormSchema>
 
 export const SignInForm: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<signInFormSchemaType>({
+  const { register, handleSubmit, resetField } = useForm<signInFormSchemaType>({
     defaultValues: {
       email: '',
       password: '',
     },
   })
 
-  const handleSignIn = (data: signInFormSchemaType) => {
+  const handleSignIn = async (data: signInFormSchemaType) => {
     try {
-      console.log(data)
-
-      reset()
+      await credentialsSignIn({ email: data.email, password: data.password })
     } catch (error) {
-      console.error(error)
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message)
+      }
+
+      resetField('password')
     }
   }
 

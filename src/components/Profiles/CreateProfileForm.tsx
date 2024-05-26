@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { createProfile } from '@/api/create-profile'
 import { GetProfilesResponse } from '@/api/get-profiles'
+import { useCustomSession } from '@/hooks/session'
 
 import { Icon } from '../Icon'
 
@@ -21,8 +21,8 @@ type CreateProfileFormSchemaType = z.infer<typeof createProfileFormSchema>
 export const CreateProfileForm: React.FC<CreateProfileFormProps> = ({
   onCreate,
 }) => {
-  const session = useSession()
-  const userId = session.data?.user.id ?? ''
+  const session = useCustomSession()
+  const userId = session.data?.user?.id ?? ''
 
   const { register, handleSubmit } = useForm<CreateProfileFormSchemaType>({
     defaultValues: {

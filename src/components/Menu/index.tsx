@@ -1,4 +1,6 @@
+import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import { destroyCookie, parseCookies } from 'nookies'
 import { useCallback } from 'react'
 
 import { cn } from '@/lib/utils'
@@ -16,15 +18,24 @@ export const Menu: React.FC<MenuProps> = ({
   onClose,
   onProfileSelection,
 }) => {
+  const router = useRouter()
+
   const handleSignOut = useCallback(() => {
     try {
-      signOut()
+      const cookies = parseCookies()
+
+      if (cookies['credentials.session-token']) {
+        destroyCookie(null, 'credentials.session-token')
+        router.push('/')
+      } else {
+        signOut()
+      }
 
       onClose()
     } catch (error) {
       console.error(error)
     }
-  }, [onClose])
+  }, [onClose, router])
 
   const handleProfileSelection = () => {
     onProfileSelection()

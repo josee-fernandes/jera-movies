@@ -2,7 +2,9 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const isAuthenticated = !!request.cookies.has('next-auth.session-token')
+  const isAuthenticated =
+    !!request.cookies.has('next-auth.session-token') ||
+    !!request.cookies.has('credentials.session-token')
 
   if (!request.url.includes('/browse') && isAuthenticated) {
     return NextResponse.redirect(new URL('/browse', request.url))

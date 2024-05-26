@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import { Anton, Playfair_Display as PlayfairDisplay } from 'next/font/google'
 import localFont from 'next/font/local'
 import { SessionProvider } from 'next-auth/react'
+import { Toaster } from 'sonner'
 
 import { useIsomorphicLayoutEffect } from '@/hooks'
 import { QueryProvider } from '@/lib/react-query'
@@ -35,6 +36,7 @@ const App: React.FC<AppProps> = ({
   return (
     <SessionProvider session={session}>
       <QueryProvider>
+        <Toaster richColors />
         <Component {...pageProps} />
       </QueryProvider>
     </SessionProvider>

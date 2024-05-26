@@ -1,7 +1,11 @@
+import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
+
+import { signUp } from '@/api/credentials-sign-up'
 
 const signUpFormSchema = z.object({
   email: z.string().email(),
@@ -13,32 +17,39 @@ const signUpFormSchema = z.object({
 type signUpFormSchemaType = z.infer<typeof signUpFormSchema>
 
 export const SignUpForm: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<signUpFormSchemaType>({
-    defaultValues: {
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      name: '',
-    },
-  })
+  const { register, handleSubmit, reset, resetField } =
+    useForm<signUpFormSchemaType>({
+      defaultValues: {
+        email: 'teste@teste.com',
+        password: '123456',
+        passwordConfirmation: '',
+        name: 'Teste',
+      },
+    })
 
   const handleSignUp = async (data: signUpFormSchemaType) => {
     try {
-      await fetch('/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          name: data.name,
-        }),
+      if (data.password !== data.passwordConfirmation) {
+        resetField('passwordConfirmation')
+
+        toast.warning("Passwords don't match.")
+        return
+      }
+
+      await signUp({
+        email: data.email,
+        password: data.password,
+        name: data.name,
       })
 
       reset()
     } catch (error) {
-      console.error(error)
+      if (error instanceof AxiosError) {
+        toast.error(error?.response?.data?.message)
+      }
+
+      resetField('password')
+      resetField('passwordConfirmation')
     }
   }
 

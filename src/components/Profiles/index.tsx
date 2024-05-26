@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import { useCallback, useState } from 'react'
 
 import { getProfiles } from '@/api/get-profiles'
+import { useCustomSession } from '@/hooks/session'
 
 import { Avatar } from '../Avatar'
 import { Icon } from '../Icon'
@@ -15,8 +15,8 @@ interface ProfilesProps {
 }
 
 export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
-  const session = useSession()
-  const userId = session.data?.user.id ?? ''
+  const session = useCustomSession()
+  const userId = session?.data?.user?.id ?? ''
 
   const {
     data: profiles,
