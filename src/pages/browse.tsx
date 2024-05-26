@@ -2,12 +2,11 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { signOut } from 'next-auth/react'
 import logo from 'public/logo.svg'
 import { useCallback, useEffect, useState } from 'react'
 
 import { Avatar } from '@/components/Avatar'
-import { Icon } from '@/components/Icon'
+import { Menu } from '@/components/Menu'
 import { Movies } from '@/components/Movies'
 import { SearchedMovies } from '@/components/Movies/SearchMovies'
 import { Profiles } from '@/components/Profiles'
@@ -23,6 +22,7 @@ const Browse: NextPage = () => {
 
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null)
   const [profileSelection, setProfileSelection] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const onProfileSelect = useCallback((profile: ProfileType) => {
     setCurrentProfile(profile)
@@ -43,12 +43,8 @@ const Browse: NextPage = () => {
     [searchParams],
   )
 
-  const handleSignOut = useCallback(() => {
-    try {
-      signOut()
-    } catch (error) {
-      console.error(error)
-    }
+  const handleToggleIsMenuOpen = useCallback(() => {
+    setIsMenuOpen((oldIsMenuOpen) => !oldIsMenuOpen)
   }, [])
 
   useEffect(() => {
@@ -59,8 +55,14 @@ const Browse: NextPage = () => {
     return <Profiles onProfileSelect={onProfileSelect} />
 
   return (
-    <div className="min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
+    <div className="relative min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
       {/* {profileSelection && <Profiles onProfileSelect={onProfileSelect} />} */}
+
+      <Menu
+        isOpen={isMenuOpen}
+        onClose={handleToggleIsMenuOpen}
+        onProfileSelection={handleChangeProfile}
+      />
 
       <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
         <Image
@@ -70,7 +72,7 @@ const Browse: NextPage = () => {
           priority
         />
         <div className="flex items-center gap-4">
-          <div role="button" onClick={handleChangeProfile}>
+          <div role="button" onClick={handleToggleIsMenuOpen}>
             {currentProfile?.avatar_url && (
               <Avatar
                 src={currentProfile.avatar_url}
@@ -78,9 +80,6 @@ const Browse: NextPage = () => {
                 className="size-10 overflow-hidden rounded-full"
               />
             )}
-          </div>
-          <div role="button" onClick={handleSignOut}>
-            <Icon name="log-out" />
           </div>
         </div>
       </nav>
