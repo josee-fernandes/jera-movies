@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth, { NextAuthOptions } from 'next-auth'
-import FacebookProvider from 'next-auth/providers/facebook'
+import FacebookProvider, { FacebookProfile } from 'next-auth/providers/facebook'
 
 import { PrismaAdapter } from '@/lib/auth/prisma-adapter'
 
@@ -10,43 +10,36 @@ export const authOptions: NextAuthOptions = {
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID ?? '',
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? '',
-      // authorization: {
-      //   params: {
-      //     prompt: 'consent',
-      //     access_type: 'offline',
-      //     response_type: 'code',
-      //   },
-      // },
       userinfo: {
         params: {
           fields: 'id,name,email,picture.type(large)',
         },
       },
+      profile: (profile: FacebookProfile) => ({
+        id: profile.id,
+        email: profile.email,
+        name: profile.name,
+        avatar_url: profile.picture.data.url ?? '',
+      }),
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        return {
-          ...token,
-          accessToken: account.access_token,
-        }
-      }
-      return token
+    signIn: async () => {
+      return '/browse'
     },
-    async session({ session, token }) {
-      return {
-        ...session,
-        accessToken: token.accessToken,
-        user: {
-          ...session.user,
-          id: token.sub,
-        },
-      }
+    session: async ({ session }) => {
+      return session
     },
   },
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+  if (
+    req.url?.includes('error=access_denied') &&
+    req.url?.includes('error_reason=user_denied')
+  ) {
+    return res.redirect('/sign-up?error=permissions-denied')
+  }
+
   return await NextAuth(req, res, authOptions)
 }

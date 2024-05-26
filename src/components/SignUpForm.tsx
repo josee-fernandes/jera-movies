@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -13,7 +13,6 @@ const signUpFormSchema = z.object({
 type signUpFormSchemaType = z.infer<typeof signUpFormSchema>
 
 export const SignUpForm: React.FC = () => {
-  const session = useSession()
   const { register, handleSubmit, reset } = useForm<signUpFormSchemaType>({
     defaultValues: {
       email: '',
@@ -46,8 +45,6 @@ export const SignUpForm: React.FC = () => {
   const handleFacebookAuth = async () => {
     try {
       await signIn('facebook')
-
-      console.log({ session })
     } catch (error) {
       console.error(error)
     }

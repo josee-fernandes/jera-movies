@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import logo from 'public/logo.svg'
 import { useCallback, useState } from 'react'
 
@@ -13,8 +14,11 @@ import { cn } from '@/lib/utils'
 
 const Browse: NextPage = () => {
   const params = useSearchParams()
-
   const filter = params.get('filter') ?? 'suggestions'
+
+  const session = useSession()
+
+  console.log({ session })
 
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null)
   const [profileSelection, setProfileSelection] = useState(true)

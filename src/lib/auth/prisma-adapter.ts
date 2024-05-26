@@ -8,16 +8,15 @@ export function PrismaAdapter(): Adapter {
       const prismaUser = await prisma.user.create({
         data: {
           email: user.email,
-          password: user.password,
+          password: '', // não retorna do facebook, temporariamente vazia
           name: user.name!,
-          avatar_url: '',
+          avatar_url: user.avatar_url,
         },
       })
 
       return {
         id: prismaUser.id,
         email: prismaUser.email,
-        password: prismaUser.password,
         name: prismaUser.name,
         avatar_url: prismaUser.avatar_url!,
         emailVerified: null,
@@ -33,7 +32,6 @@ export function PrismaAdapter(): Adapter {
       return {
         id: user.id,
         email: user.email,
-        password: user.password,
         name: user.name,
         avatar_url: user.avatar_url!,
         emailVerified: null,
@@ -49,7 +47,6 @@ export function PrismaAdapter(): Adapter {
       return {
         id: user.id,
         email: user.email,
-        password: user.password,
         name: user.name,
         avatar_url: user.avatar_url!,
         emailVerified: null,
@@ -75,7 +72,6 @@ export function PrismaAdapter(): Adapter {
       return {
         id: user.id,
         email: user.email,
-        password: user.password,
         name: user.name,
         avatar_url: user.avatar_url!,
         emailVerified: null,
@@ -86,7 +82,6 @@ export function PrismaAdapter(): Adapter {
         where: { id: user.id! },
         data: {
           name: user.name!,
-          password: user.password,
           email: user.email,
           avatar_url: user.avatar_url,
         },
@@ -95,13 +90,11 @@ export function PrismaAdapter(): Adapter {
       return {
         id: prismaUser.id,
         email: prismaUser.email!,
-        password: prismaUser.password!,
         name: prismaUser.name,
         avatar_url: prismaUser.avatar_url!,
         emailVerified: null,
       }
     },
-    // async deleteUser(userId) {},
     async linkAccount(account) {
       await prisma.account.create({
         data: {
@@ -155,7 +148,6 @@ export function PrismaAdapter(): Adapter {
         user: {
           id: user.id,
           email: user.email,
-          password: user.password,
           name: user.name,
           avatar_url: user.avatar_url!,
           emailVerified: null,
