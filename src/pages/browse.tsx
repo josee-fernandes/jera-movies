@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import logo from 'public/logo.svg'
 import { useCallback, useState } from 'react'
 
@@ -13,9 +13,10 @@ import { SearchForm } from '@/components/SearchForm'
 import { cn } from '@/lib/utils'
 
 const Browse: NextPage = () => {
-  const params = useSearchParams()
-  const filter = params.get('filter') ?? 'suggestions'
-  const query = params.get('query') ?? ''
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter') ?? 'suggestions'
+  const query = searchParams.get('query') ?? ''
 
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null)
   const [profileSelection, setProfileSelection] = useState(true)
@@ -28,6 +29,16 @@ const Browse: NextPage = () => {
   const handleChangeProfile = useCallback(() => {
     setProfileSelection(true)
   }, [])
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams],
+  )
 
   if (!currentProfile || profileSelection)
     return <Profiles onProfileSelect={onProfileSelect} />
@@ -76,7 +87,8 @@ const Browse: NextPage = () => {
         <span>FILTER BY:</span>
         <div className="flex flex-wrap justify-center gap-4 md:justify-start">
           <Link
-            href="?filter=suggestions"
+            href={`${pathname}?${createQueryString('filter', 'suggestions')}`}
+            scroll={false}
             className={cn(
               filter === 'suggestions'
                 ? 'text-brand-accent-500 font-bold'
@@ -86,7 +98,8 @@ const Browse: NextPage = () => {
             SUGGESTIONS
           </Link>
           <Link
-            href="?filter=saved"
+            href={`${pathname}?${createQueryString('filter', 'saved')}`}
+            scroll={false}
             className={cn(
               filter === 'saved'
                 ? 'text-brand-accent-500 font-bold'
@@ -96,7 +109,8 @@ const Browse: NextPage = () => {
             SAVED FOR LATER
           </Link>
           <Link
-            href="?filter=watched"
+            href={`${pathname}?${createQueryString('filter', 'watched')}`}
+            scroll={false}
             className={cn(
               filter === 'watched'
                 ? 'text-brand-accent-500 font-bold'
