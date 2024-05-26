@@ -4,7 +4,7 @@ interface MovieType {
   cover: string
   watched: boolean
   saved: boolean
-  themoviedb_id: string
+  themoviedb_id: number
   themoviedb_genres_ids: number[]
 }
 

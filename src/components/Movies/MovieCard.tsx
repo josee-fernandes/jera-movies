@@ -22,9 +22,10 @@ const MovieCardFC: React.FC<MovieCardProps> = ({ movie, profileId }) => {
   const queryClient = useQueryClient()
 
   const updateMovieOnCache = (
-    movieId: string,
+    themoviedbId: number,
     saved: boolean,
     watched: boolean,
+    type: 'saved' | 'watched',
   ) => {
     const moviesCache = queryClient.getQueriesData<GetMoviesResponse>({
       queryKey: ['movies', profileId, filter],
@@ -35,13 +36,32 @@ const MovieCardFC: React.FC<MovieCardProps> = ({ movie, profileId }) => {
         return
       }
 
+      const updatedCache = [
+        ...cacheData.map((movie) =>
+          movie.themoviedb_id === themoviedbId
+            ? { ...movie, saved, watched }
+            : movie,
+        ),
+      ]
+
+      const updatedCacheFiltered = [...updatedCache]
+
+      if (filter !== 'suggestions') {
+        updatedCacheFiltered.filter((movie) =>
+          type === 'saved' ? movie.saved : movie.watched,
+        )
+      }
+
       queryClient.setQueryData<GetMoviesResponse>(cacheKey, [
         ...cacheData.map((movie) =>
-          movie.themoviedb_id === movieId
+          movie.themoviedb_id === themoviedbId
             ? { ...movie, saved, watched }
             : movie,
         ),
       ])
+
+      // Refresh list after removed
+      queryClient.refetchQueries()
     }
   }
 
@@ -49,7 +69,12 @@ const MovieCardFC: React.FC<MovieCardProps> = ({ movie, profileId }) => {
     useMutation({
       mutationFn: toggleMovieSaved,
       async onSuccess(movie) {
-        updateMovieOnCache(movie!.themoviedb_id, movie!.saved, movie!.watched)
+        updateMovieOnCache(
+          movie!.themoviedb_id,
+          movie!.saved,
+          movie!.watched,
+          'saved',
+        )
       },
     })
 
@@ -59,7 +84,12 @@ const MovieCardFC: React.FC<MovieCardProps> = ({ movie, profileId }) => {
   } = useMutation({
     mutationFn: toggleMovieWatched,
     async onSuccess(movie) {
-      updateMovieOnCache(movie!.themoviedb_id, movie!.saved, movie!.watched)
+      updateMovieOnCache(
+        movie!.themoviedb_id,
+        movie!.saved,
+        movie!.watched,
+        'watched',
+      )
     },
   })
 

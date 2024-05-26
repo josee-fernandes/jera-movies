@@ -9,7 +9,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!profileId)
       return res.status(404).json({ message: 'Profile id not provided' })
 
-    const movies = await prisma.movie.findMany({
+    const profileMovies = await prisma.movie.findMany({
       where: {
         ProfileMovie: {
           some: {
@@ -20,7 +20,31 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     })
 
-    res.status(200).json(movies)
+    const movies: MovieType[] = []
+
+    for (const profileMovie of profileMovies) {
+      let genresIds: number[] = []
+
+      const genres = await prisma.genre.findMany({
+        where: {
+          MovieGenre: {
+            some: {
+              movie_id: profileMovie.id,
+            },
+          },
+        },
+      })
+
+      if (genres.length) {
+        const ids = genres.map((genre) => genre.themoviedb_genre_id)
+
+        genresIds = genresIds.concat(ids)
+      }
+
+      movies.push({ ...profileMovie, themoviedb_genres_ids: genresIds })
+    }
+
+    return res.status(200).json(movies)
   }
 
   return res.status(405).end()
