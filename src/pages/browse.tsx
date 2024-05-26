@@ -2,10 +2,12 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import logo from 'public/logo.svg'
 import { useCallback, useEffect, useState } from 'react'
 
 import { Avatar } from '@/components/Avatar'
+import { Icon } from '@/components/Icon'
 import { Movies } from '@/components/Movies'
 import { SearchedMovies } from '@/components/Movies/SearchMovies'
 import { Profiles } from '@/components/Profiles'
@@ -41,6 +43,14 @@ const Browse: NextPage = () => {
     [searchParams],
   )
 
+  const handleSignOut = useCallback(() => {
+    try {
+      signOut()
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
+
   useEffect(() => {
     router.push(pathname)
   }, [currentProfile, pathname, router])
@@ -59,14 +69,19 @@ const Browse: NextPage = () => {
           className="h-10 w-max"
           priority
         />
-        <div role="button" onClick={handleChangeProfile}>
-          {currentProfile?.avatar_url && (
-            <Avatar
-              src={currentProfile.avatar_url}
-              alt={currentProfile.name}
-              className="size-10 overflow-hidden rounded-full"
-            />
-          )}
+        <div className="flex items-center gap-4">
+          <div role="button" onClick={handleChangeProfile}>
+            {currentProfile?.avatar_url && (
+              <Avatar
+                src={currentProfile.avatar_url}
+                alt={currentProfile.name}
+                className="size-10 overflow-hidden rounded-full"
+              />
+            )}
+          </div>
+          <div role="button" onClick={handleSignOut}>
+            <Icon name="log-out" />
+          </div>
         </div>
       </nav>
 

@@ -144,8 +144,10 @@ export function PrismaAdapter(): Adapter {
       })
     },
     async createSession({ sessionToken, userId, expires }) {
-      await prisma.session.create({
-        data: {
+      await prisma.session.upsert({
+        where: { user_id: userId },
+        update: { expires, session_token: sessionToken },
+        create: {
           user_id: userId,
           expires,
           session_token: sessionToken,
