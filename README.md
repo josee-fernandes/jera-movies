@@ -10,6 +10,30 @@ Run development server:
 
 It will run by default on [http://localhost:3000](http://localhost:3000)
 
+To run the database (postgresql):
+
+`$ docker run --name postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres`
+
+With docker running:
+
+`$ pnpm dlx prisma migrate dev`
+
+Don't forget to fill the environment variables:
+
+DATABASE_URL=
+DATABASE_DIRECT_URL=
+
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET=
+
+THEMOVIEDB_API_KEY=
+THEMOVIEDB_ACCESS_TOKEN=
+NEXT_PUBLIC_THEMOVIEDB_ACCESS_TOKEN=
+
+JWT_SECRET=
+
 ## Live preview 🟢
 
 https://jeramovies.vercel.app/
@@ -23,16 +47,16 @@ https://jeramovies.vercel.app/
 
 ### Backend ⚙️
 
-- [ ] Sign Up
-- [ ] Sign In
-- [ ] Social Sign In (Facebook)
-- [ ] Create profile
-- [ ] Update profile (name)
-- [ ] List profiles
-- [ ] Movie suggestion list
-- [ ] Search movie by query
-- [ ] Toggle between watched or to watch
-- [ ] Filtered list by watched or to watch
+- [x] Sign Up
+- [x] Sign In
+- [x] Social Sign In (Facebook)
+- [x] Create profile
+- [x] Update profile (name)
+- [x] List profiles
+- [x] Movie suggestion list
+- [x] Search movie by query
+- [x] Toggle between watched or to watch
+- [x] Filtered list by watched or to watch
 - [ ] Share watched movie on Facebook
 - [ ] Notify to watch
 
@@ -55,27 +79,26 @@ https://jeramovies.vercel.app/
 
 - [x] Initial setup
 - [ ] Landing Page
+  - [ ] Layout
+- [x] Sign Up
   - [x] Layout
-  - [ ] API Integration
-- [ ] Sign Up
+  - [x] API Integration
+- [x] Sign In
   - [x] Layout
-  - [ ] API Integration
-- [ ] Sign In
+  - [x] API Integration
+- [x] Choose profile
   - [x] Layout
-  - [ ] API Integration
-- [ ] Choose profile
-  - [x] Layout
-  - [ ] API Integration
-- [ ] Home
-  - [ ] Movie suggestion
+  - [x] API Integration
+- [x] Home
+  - [x] Movie suggestion
     - [x] Layout
-    - [ ] API Integration
-  - [ ] To watch movies
+    - [x] API Integration
+  - [x] To watch movies
     - [x] Layout
-    - [ ] API Integration
-  - [ ] Watched movies
+    - [x] API Integration
+  - [x] Watched movies
     - [x] Layout
-    - [ ] API Integration
+    - [x] API Integration
 
 ### License
 
