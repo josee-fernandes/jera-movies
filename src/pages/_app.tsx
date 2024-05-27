@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 
+import { ReactLenis } from '@studio-freight/react-lenis'
 import type { AppProps } from 'next/app'
 import { Anton, Playfair_Display as PlayfairDisplay } from 'next/font/google'
 import localFont from 'next/font/local'
@@ -46,7 +47,9 @@ const App: React.FC<AppProps> = ({
           }}
         />
         <Toaster richColors />
-        <Component {...pageProps} />
+        <ReactLenis root>
+          <Component {...pageProps} />
+        </ReactLenis>
       </SessionProvider>
     </QueryProvider>
   )

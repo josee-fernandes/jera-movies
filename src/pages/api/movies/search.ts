@@ -4,7 +4,7 @@ import { theMovieDbApi } from '@/lib/axios'
 import { prisma } from '@/lib/prisma'
 // import { prisma } from '@/lib/prisma'
 
-const THEMOVIEDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original'
+const THEMOVIEDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w342'
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
