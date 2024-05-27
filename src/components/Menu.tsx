@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import { Icon } from '../Icon'
+import { Icon } from './Icon'
 
 interface MenuProps {
   isOpen: boolean
@@ -49,6 +49,7 @@ export const Menu: React.FC<MenuProps> = ({
         'fixed top-0 z-10 flex h-screen w-full max-w-96 flex-col gap-10 bg-brand-accent-500 px-10 py-12 font-bold text-brand-primary-500 transition-all',
         isOpen ? 'right-0' : '-right-96',
       )}
+      data-testid="menu"
     >
       <div className="flex w-full justify-end">
         <button onClick={onClose}>

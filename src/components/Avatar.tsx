@@ -8,7 +8,7 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = ({ src, alt, className }) => {
   return (
-    <div className={`relative ${className}`}>
+    <div data-testid="avatar" className={`relative ${className}`}>
       <Image
         src={src}
         alt={alt}

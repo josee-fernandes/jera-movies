@@ -43,7 +43,10 @@ const MoviesFC: React.FC<MoviesProps> = ({ profileId }) => {
   if (error) return <h1>Error fetching movies: {error.message}</h1>
 
   return (
-    <div className="flex w-full flex-wrap justify-center gap-5 md:justify-start">
+    <div
+      data-testid="movies"
+      className="flex w-full flex-wrap justify-center gap-5 md:justify-start"
+    >
       {movies?.map((movie) => (
         <MovieCard
           key={movie.id ?? movie.themoviedb_id}
