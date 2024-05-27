@@ -20,10 +20,10 @@ export const SignUpForm: React.FC = () => {
   const { register, handleSubmit, reset, resetField } =
     useForm<signUpFormSchemaType>({
       defaultValues: {
-        email: 'teste@teste.com',
-        password: '123456',
+        email: '',
+        password: '',
         passwordConfirmation: '',
-        name: 'Teste',
+        name: '',
       },
     })
 

@@ -48,18 +48,18 @@ const Home: NextPage = () => {
             </h1>
           </div>
         </section>
-        <section className="h-screen bg-brand-secondary-500">
-          {/* Movies */}
+        {/* <section className="h-screen bg-brand-secondary-500">
+          {/* Movies 
         </section>
         <section className="h-screen bg-brand-secondary-500">
-          {/* With */}
+          {/* With 
         </section>
         <section className="h-screen bg-brand-accent-500">
-          {/* Profiles */}
+          {/* Profiles 
         </section>
         <section className="h-screen bg-brand-secondary-500">
-          {/* Footer */}
-        </section>
+          {/* Footer 
+        </section> */}
       </div>
     </>
   )
