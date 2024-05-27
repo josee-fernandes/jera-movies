@@ -5,8 +5,7 @@ export async function middleware(request: NextRequest) {
   const isAuthenticated =
     !!request.cookies.has('next-auth.session-token') ||
     !!request.cookies.has('__Secure-next-auth.session-token') ||
-    !!request.cookies.has('credentials.session-token') ||
-
+    !!request.cookies.has('credentials.session-token')
 
   if (!request.url.includes('/browse') && isAuthenticated) {
     return NextResponse.redirect(new URL('/browse', request.url))
