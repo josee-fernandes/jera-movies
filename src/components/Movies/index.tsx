@@ -5,16 +5,18 @@ import { Suspense, useMemo } from 'react'
 import { getMovies } from '@/api/get-movies'
 import { getSavedMovies } from '@/api/get-saved-movies'
 import { getWatchedMovies } from '@/api/get-watched-movies'
+import { useActiveProfile } from '@/contexts/profile'
 
 import { MovieCard } from './MovieCard'
 
-interface MoviesProps {
-  profileId: string
-}
+// interface MoviesProps {}
 
-const MoviesFC: React.FC<MoviesProps> = ({ profileId }) => {
+const MoviesFC: React.FC = () => {
   const searchParams = useSearchParams()
   const filter = searchParams.get('filter')
+
+  const { activeProfile } = useActiveProfile()
+  const profileId = useMemo(() => activeProfile?.id ?? '', [activeProfile])
 
   const moviesQueryFn = useMemo(() => {
     switch (filter) {
@@ -48,11 +50,7 @@ const MoviesFC: React.FC<MoviesProps> = ({ profileId }) => {
       className="flex w-full flex-wrap justify-center gap-5 md:justify-start"
     >
       {movies?.map((movie) => (
-        <MovieCard
-          key={movie.id ?? movie.themoviedb_id}
-          movie={movie}
-          profileId={profileId}
-        />
+        <MovieCard key={movie.id ?? movie.themoviedb_id} movie={movie} />
       ))}
     </div>
   )
@@ -60,7 +58,7 @@ const MoviesFC: React.FC<MoviesProps> = ({ profileId }) => {
 
 MoviesFC.displayName = 'MoviesFC'
 
-export const Movies: React.FC<MoviesProps> = (props) => {
+export const Movies: React.FC = (props) => {
   return (
     <Suspense>
       <MoviesFC {...props} />

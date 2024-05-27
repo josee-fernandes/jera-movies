@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useCallback, useState } from 'react'
 
 import { getProfiles } from '@/api/get-profiles'
+import { useActiveProfile } from '@/contexts/profile'
 import { useCustomSession } from '@/hooks/session'
 
 import { Avatar } from '../Avatar'
@@ -10,11 +11,9 @@ import { CreateProfileButton } from './CreateProfileButton'
 import { CreateProfileForm } from './CreateProfileForm'
 import { Profile } from './Profile'
 
-interface ProfilesProps {
-  onProfileSelect: (params: ProfileType) => void
-}
+// interface ProfilesProps {}
 
-export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
+export const Profiles: React.FC = () => {
   const session = useCustomSession()
   const userId = session?.data?.user?.id ?? ''
 
@@ -27,6 +26,8 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
     queryFn: () => getProfiles({ userId }),
   })
 
+  const { updateActiveProfile, updateIsSwitchingProfile } = useActiveProfile()
+
   const [creatingProfile, setCreatingProfile] = useState(false)
 
   const onCreate = () => {
@@ -35,9 +36,10 @@ export const Profiles: React.FC<ProfilesProps> = ({ onProfileSelect }) => {
 
   const onSelect = useCallback(
     (profile: ProfileType) => {
-      onProfileSelect(profile)
+      updateActiveProfile(profile)
+      updateIsSwitchingProfile(false)
     },
-    [onProfileSelect],
+    [updateActiveProfile, updateIsSwitchingProfile],
   )
 
   const openCreateProfile = useCallback(() => {

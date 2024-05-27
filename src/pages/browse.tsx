@@ -12,6 +12,7 @@ import { Movies } from '@/components/Movies'
 import { SearchedMovies } from '@/components/Movies/SearchMovies'
 import { Profiles } from '@/components/Profiles'
 import { SearchForm } from '@/components/SearchForm'
+import { ProfileContextProvider, useActiveProfile } from '@/contexts/profile'
 import { cn } from '@/lib/utils'
 
 const Browse: NextPage = () => {
@@ -21,18 +22,9 @@ const Browse: NextPage = () => {
   const filter = searchParams.get('filter') ?? 'suggestions'
   const query = searchParams.get('query') ?? ''
 
-  const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null)
-  const [profileSelection, setProfileSelection] = useState(true)
+  const { activeProfile, isSwitchingProfile } = useActiveProfile()
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const onProfileSelect = useCallback((profile: ProfileType) => {
-    setCurrentProfile(profile)
-    setProfileSelection(false)
-  }, [])
-
-  const handleChangeProfile = useCallback(() => {
-    setProfileSelection(true)
-  }, [])
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -50,20 +42,15 @@ const Browse: NextPage = () => {
 
   useEffect(() => {
     router.push(pathname)
-  }, [currentProfile, pathname, router])
+  }, [activeProfile, pathname, router])
 
-  if (!currentProfile || profileSelection)
-    return <Profiles onProfileSelect={onProfileSelect} />
+  if (!activeProfile || isSwitchingProfile) return <Profiles />
 
   return (
     <>
       <NextSeo title="Browse your favorite movies | Jera Movies" noindex />
       <div className="relative min-h-screen bg-brand-primary-500 pt-16 md:pt-[5.375rem]">
-        <Menu
-          isOpen={isMenuOpen}
-          onClose={handleToggleIsMenuOpen}
-          onProfileSelection={handleChangeProfile}
-        />
+        <Menu isOpen={isMenuOpen} onClose={handleToggleIsMenuOpen} />
 
         <nav className="mx-auto flex w-[95%] max-w-[1200px] flex-col items-center justify-between gap-4 md:flex-row">
           <Image
@@ -74,10 +61,10 @@ const Browse: NextPage = () => {
           />
           <div className="flex items-center gap-4">
             <div role="button" onClick={handleToggleIsMenuOpen}>
-              {currentProfile?.avatar_url && (
+              {activeProfile?.avatar_url && (
                 <Avatar
-                  src={currentProfile.avatar_url}
-                  alt={currentProfile.name}
+                  src={activeProfile.avatar_url}
+                  alt={activeProfile.name}
                   className="size-10 overflow-hidden rounded-full"
                 />
               )}
@@ -89,7 +76,7 @@ const Browse: NextPage = () => {
           <h2 className="text-center font-anton text-3xl md:text-[4.6vw] lg:text-5xl">
             DISCOVER MILLIONS OF MOVIES EXPLORING
           </h2>
-          <SearchForm profileId={currentProfile.id} />
+          <SearchForm />
         </div>
 
         {query && (
@@ -98,7 +85,7 @@ const Browse: NextPage = () => {
               <span>FOUND MOVIES:</span>
             </div>
             <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
-              <SearchedMovies profileId={currentProfile.id} />
+              <SearchedMovies />
             </div>
           </div>
         )}
@@ -143,7 +130,7 @@ const Browse: NextPage = () => {
         </div>
 
         <div className="mx-auto mt-16 flex w-[95%] max-w-[1200px] flex-col gap-4 md:flex-row">
-          <Movies profileId={currentProfile.id} />
+          <Movies />
         </div>
       </div>
     </>
@@ -152,4 +139,12 @@ const Browse: NextPage = () => {
 
 Browse.displayName = 'Browse'
 
-export default Browse
+const BrowseWithProfile: NextPage = (props) => {
+  return (
+    <ProfileContextProvider>
+      <Browse {...props} />
+    </ProfileContextProvider>
+  )
+}
+
+export default BrowseWithProfile

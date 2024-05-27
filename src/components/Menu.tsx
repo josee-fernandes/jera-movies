@@ -3,6 +3,7 @@ import { signOut } from 'next-auth/react'
 import { destroyCookie, parseCookies } from 'nookies'
 import { useCallback } from 'react'
 
+import { useActiveProfile } from '@/contexts/profile'
 import { cn } from '@/lib/utils'
 
 import { Icon } from './Icon'
@@ -10,15 +11,12 @@ import { Icon } from './Icon'
 interface MenuProps {
   isOpen: boolean
   onClose: () => void
-  onProfileSelection: () => void
 }
 
-export const Menu: React.FC<MenuProps> = ({
-  isOpen,
-  onClose,
-  onProfileSelection,
-}) => {
+export const Menu: React.FC<MenuProps> = ({ isOpen, onClose }) => {
   const router = useRouter()
+
+  const { updateIsSwitchingProfile } = useActiveProfile()
 
   const handleSignOut = useCallback(() => {
     try {
@@ -38,7 +36,7 @@ export const Menu: React.FC<MenuProps> = ({
   }, [onClose, router])
 
   const handleProfileSelection = () => {
-    onProfileSelection()
+    updateIsSwitchingProfile(true)
 
     onClose()
   }

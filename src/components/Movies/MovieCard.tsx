@@ -1,23 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { Suspense, useCallback } from 'react'
+import { Suspense, useCallback, useMemo } from 'react'
 
 import { GetMoviesResponse } from '@/api/get-movies'
 import { toggleMovieSaved } from '@/api/toggle-movie-saved'
 import { toggleMovieWatched } from '@/api/toggle-movie-watched'
+import { useActiveProfile } from '@/contexts/profile'
 import { cn } from '@/lib/utils'
 
 import { Icon } from '../Icon'
 
 interface MovieCardProps {
   movie: MovieType
-  profileId: string
 }
 
-const MovieCardFC: React.FC<MovieCardProps> = ({ movie, profileId }) => {
+const MovieCardFC: React.FC<MovieCardProps> = ({ movie }) => {
   const searchParams = useSearchParams()
   const filter = searchParams.get('filter')
+
+  const { activeProfile } = useActiveProfile()
+  const profileId = useMemo(() => activeProfile?.id ?? '', [activeProfile])
 
   const queryClient = useQueryClient()
 

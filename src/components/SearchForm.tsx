@@ -3,9 +3,7 @@ import { Suspense, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-interface SearchFormProps {
-  profileId: string
-}
+// interface SearchFormProps {}
 
 const searchFormSchema = z.object({
   query: z.string().transform((query) => query.trim()),
@@ -13,7 +11,7 @@ const searchFormSchema = z.object({
 
 type SearchFormSchemaType = z.infer<typeof searchFormSchema>
 
-const SearchFormFC: React.FC<SearchFormProps> = () => {
+const SearchFormFC: React.FC = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -68,7 +66,7 @@ const SearchFormFC: React.FC<SearchFormProps> = () => {
 
 SearchFormFC.displayName = 'SearchFormFC'
 
-export const SearchForm: React.FC<SearchFormProps> = (props) => {
+export const SearchForm: React.FC = (props) => {
   return (
     <Suspense>
       <SearchFormFC {...props} />
