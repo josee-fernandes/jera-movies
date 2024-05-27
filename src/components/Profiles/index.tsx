@@ -104,14 +104,16 @@ export const Profiles: React.FC = () => {
               <CreateProfileButton onClick={openCreateProfile} />
             )}
           </div>
-          <div>
-            <button
-              className="rounded-lg border border-brand-secondary-500 px-8 py-4 text-brand-secondary-500 transition-all hover:bg-brand-secondary-500 hover:text-brand-primary-500"
-              onClick={handleToggleManageProfiles}
-            >
-              {isManagingProfiles ? 'CANCEL' : 'MANAGE PROFILES'}
-            </button>
-          </div>
+          {profiles && profiles?.length > 1 && (
+            <div>
+              <button
+                className="rounded-lg border border-brand-secondary-500 px-8 py-4 text-brand-secondary-500 transition-all hover:bg-brand-secondary-500 hover:text-brand-primary-500"
+                onClick={handleToggleManageProfiles}
+              >
+                {isManagingProfiles ? 'CANCEL' : 'MANAGE PROFILES'}
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
