@@ -26,7 +26,12 @@ export const Profiles: React.FC = () => {
     queryFn: () => getProfiles({ userId }),
   })
 
-  const { updateActiveProfile, updateIsSwitchingProfile } = useActiveProfile()
+  const {
+    updateActiveProfile,
+    updateIsSwitchingProfile,
+    isManagingProfiles,
+    updateIsManagingProfiles,
+  } = useActiveProfile()
 
   const [creatingProfile, setCreatingProfile] = useState(false)
 
@@ -49,6 +54,10 @@ export const Profiles: React.FC = () => {
   const handleBack = useCallback(() => {
     setCreatingProfile(false)
   }, [])
+
+  const handleToggleManageProfiles = useCallback(() => {
+    updateIsManagingProfiles(!isManagingProfiles)
+  }, [isManagingProfiles, updateIsManagingProfiles])
 
   if (isLoadingProfiles) return <h1>Loading profiles ...</h1>
 
@@ -94,6 +103,14 @@ export const Profiles: React.FC = () => {
             {profiles && profiles?.length < 4 && (
               <CreateProfileButton onClick={openCreateProfile} />
             )}
+          </div>
+          <div>
+            <button
+              className="rounded-lg border border-brand-secondary-500 px-8 py-4 text-brand-secondary-500 transition-all hover:bg-brand-secondary-500 hover:text-brand-primary-500"
+              onClick={handleToggleManageProfiles}
+            >
+              {isManagingProfiles ? 'CANCEL' : 'MANAGE PROFILES'}
+            </button>
           </div>
         </div>
       )}

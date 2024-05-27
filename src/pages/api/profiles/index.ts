@@ -37,6 +37,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json(profile)
   }
 
+  if (req.method === 'DELETE') {
+    const { profileId } = req.query
+
+    if (!profileId)
+      return res.status(404).json({ message: 'Profile id not provided' })
+
+    await prisma.profile.delete({ where: { id: profileId.toString() } })
+
+    return res.status(200).json({ message: 'Profile deleted.' })
+  }
+
   return res.status(405).end()
 }
 
