@@ -1,5 +1,7 @@
 # Jera Movies 🍿
 
+![Cover](https://github.com/josee-fernandes/jera-movies/assets/51970876/44e2d1cb-509c-4f55-9bb6-672ca062bc69)
+
 Application for a code challenge from [Jera](https://jera.com.br).
 
 ## Instructions
